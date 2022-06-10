@@ -1,0 +1,32 @@
+body {
+    color: #4a4a4a;
+    background: #ffdc43;
+    text-align: center;
+}
+
+td,
+th {
+    vertical-align: middle !important;
+}
+
+td div {
+    background-size: cover;
+    width: 60px;
+    height: 60px;
+}
+
+a {
+    color: black
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+input {
+    text-align: center;
+}
+
+.form-label {
+    font-weight: 500;
+}

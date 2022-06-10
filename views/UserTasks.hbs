@@ -1,0 +1,67 @@
+<button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addModal">
+  Agregar
+</button>
+
+<table class="table table-dark">
+  <thead>
+    <tr>
+      <th>Título</th>
+      <th>Descripción</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody id="tasks"> </tbody>
+</table>
+
+{{> tareas/add-form }}
+{{> tareas/edit-form }}
+
+<script>
+  const apiTaskRoute = '/user_tasks';
+  const tasks = document.querySelector('#tasks');
+
+  getUserTasks();
+  async function getUserTasks() {
+    try {
+      const { data } = await axios.get('/user_tasks');
+      tasks.innerHTML = data.map(t => makeCard(t, true)).join('');
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function deleteTask(id) {
+    try {
+      const result = await deleteAlert.fire();
+
+      if (result.isConfirmed) {
+        await axios.delete(`/user_tasks/${id}`);
+        document.querySelector(`#task-${id}`).remove();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  function openEditModal(id, title, description) {
+    document.querySelector('#editModal [name="id"]').value = id;
+    document.querySelector('#editModal [name="title"]').value = title;
+    document.querySelector('#editModal [name="description"]').value = description;
+  }
+
+  function makeCard({ id, title, description }, newRow = false) {
+    const content = `
+      <td class="card-title">${title}</td>
+      <td class="card-category">${description}</td>
+      <td>
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal"
+          onclick="openEditModal('${id}', '${title}', '${description}')">
+          Editar
+        </button>
+        <button class="btn btn-danger btn-sm" onclick="deleteTask('${id}')">Eliminar</button>
+      </td>
+    `;
+
+    return newRow ? `<tr id="task-${id}">${content}</tr>` : content;
+  }
+</script>

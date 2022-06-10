@@ -1,0 +1,48 @@
+<div class="py-5">
+  <h2>Iniciar Sesión</h2>
+  <hr class="w-50 mx-auto" />
+
+  <form>
+    <div class="form-group">
+      <div class="form-group mb-2">
+        <label>Email</label>
+        <input class="form-control w-50 m-auto" />
+      </div>
+      <div class="form-group mb-2">
+        <label>Password</label>
+        <input class="form-control w-50 m-auto" type="password" />
+      </div>
+    </div>
+    <button class="btn btn-success mb-3">Ingresar</button>
+    <p>¿Aún no tienes cuenta? <a href="/registro">Regístrate</a></p>
+  </form>
+</div>
+
+<script>
+
+  const form = document.querySelector("form")
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault()
+
+    let [email, password] = document.querySelectorAll("input")
+
+    email = email.value
+    password = password.value
+
+    try {
+      const { data } = await axios.post("/auth/login", { email, password })
+      const { user, token } = data;
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('token', token);
+      window.location = `/Perfil`
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Credenciales incorrectas',
+      })
+    }
+
+  })
+</script>

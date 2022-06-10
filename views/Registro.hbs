@@ -1,0 +1,60 @@
+<div class="py-4">
+    <h2>Registro</h2>
+    <hr class="w-50 my-3 m-auto" />
+
+    <form onsubmit="register(event)">
+        <div class="row w-50 m-auto">
+            <div class="col-12 col-sm-6 mb-3">
+                <label class="form-label">Email</label>
+                <input class="form-control" name="email" value="test@yopmail.com" />
+            </div>
+            <div class="col-12 col-sm-6 mb-3">
+                <label class="form-label">Nombre</label>
+                <input class="form-control" name="name" value="Test" />
+            </div>
+            <div class="col-12 col-sm-6 mb-3">
+                <label class="form-label">Password</label>
+                <input class="form-control" type="password" name="password" value="1234" />
+            </div>
+            <div class="col-12 col-sm-6 mb-3">
+                <label class="form-label">Repita la password</label>
+                <input class="form-control" type="password" name="repeat_password" value="1234" />
+            </div>
+            <div class="col-12 mb-3">
+                <label class="form-label">Foto de perfil</label>
+                <input type="file" name="foto" accept="image/*" />
+            </div>
+        </div>
+        <button class="btn btn-info mb-3">Registrarme</button>
+        <p><a href="/login"> Iniciar sesión</a></p>
+    </form>
+
+    <script>
+        async function register(event) {
+            event.preventDefault();
+            const form = document.querySelector('form');
+            const formData = new FormData(form);
+            try {
+                const { status } = await axios.post('/auth/register', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                if (status === 201) {
+                    window.location.href = '/login';
+                    Swal.fire({
+                        title: 'Registro exitoso',
+                        text: 'Ahora puedes iniciar sesión',
+                        icon: 'success'
+                    });
+                }
+            } catch (error) {
+                Swal.fire({
+                    title: 'Error',
+                    text: error.response.data,
+                    icon: 'error'
+                });
+            }
+        }
+    </script>
+</div>

@@ -1,0 +1,43 @@
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form id="addForm" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Agregar Tarea</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-2">
+          <label class="form-label">Titulo</label>
+          <input name="title" class="form-control" required />
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Descripcion</label>
+          <input name="description" class="form-control" required />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success">Agregar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const addModal = new bootstrap.Modal(document.getElementById('addModal'));
+
+  document.querySelector("#addForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+    const payload = Object.fromEntries(data);
+    try {
+      const { data } = await axios.post(apiTaskRoute, payload);
+      tasks.innerHTML += makeCard(data, true);
+      addModal.hide();
+      form.reset();
+    } catch (error) {
+      console.error(error);
+    }
+  })
+</script>

@@ -1,0 +1,64 @@
+<button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addModal">
+  Agregar
+</button>
+
+<div class="row" id="tasks">
+  {{#each tasks}}
+  <div id="task-{{id}}" class="col-12 col-md-4 mb-3">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">{{title}}</h4>
+        <p class="card-category">{{description}}</p>
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal"
+          onclick="openEditModal('{{id}}', '{{title}}', '{{description}}')">
+          Editar
+        </button>
+        <button class="btn btn-danger btn-sm" onclick="deleteTask('{{id}}')">Eliminar</button>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+</div>
+
+{{> tareas/add-form }}
+{{> tareas/edit-form }}
+
+<script>
+  const apiTaskRoute = '/tasks';
+  const tasks = document.querySelector('#tasks');
+
+  async function deleteTask(id) {
+    try {
+      const result = await deleteAlert.fire();
+      if (result.isConfirmed) {
+        await axios.delete(`/tasks/${id}`);
+        document.querySelector(`#task-${id}`).remove();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  function openEditModal(id, title, description) {
+    document.querySelector('#editModal input[name="id"]').value = id;
+    document.querySelector('#editModal [name="title"]').value = title;
+    document.querySelector('#editModal [name="description"]').value = description;
+  }
+
+  function makeCard({ id, title, description }, newCard = false) {
+    const card = `
+      <div class="card">
+          <div class="card-header">
+              <h4 class="card-title">${title}</h4>
+              <p class="card-category">${description}</p>
+              <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal"
+                onclick="openEditModal('${id}', '${title}', '${description}')">
+                Editar
+              </button>
+              <button class="btn btn-danger btn-sm" onclick="deleteTask('${id}')">Eliminar</button>
+          </div>
+      </div>
+    `;
+    return newCard ? `<div id="task-${id}" class="col-12 col-md-4 mb-3">${card}</div>` : card;
+  }
+</script>
