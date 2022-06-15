@@ -2,7 +2,7 @@ const { Router } = require("express");
 const bcrypt = require('bcrypt');
 const fs = require('fs/promises');
 const db = require("../db/users");
-const requiresAuth = require('../middlewares/requiresAuth');
+const { requiresAuth, verifyRoles } = require('../middlewares/requiresAuth');
 
 const router = Router();
 
@@ -26,7 +26,8 @@ router.put("/", requiresAuth, async (req, res) => {
     };
 });
 
-router.delete("/:id", requiresAuth, async (req, res) => {
+// solo un admin puede eliminar un usuario
+router.delete("/:id", verifyRoles(2), async (req, res) => {
     try {
         const { id } = req.params
         const user = await db.deleteUser(id);

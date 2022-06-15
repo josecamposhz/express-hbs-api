@@ -41,11 +41,12 @@
                     }
                 });
                 if (status === 201) {
-                    window.location.href = '/login';
                     Swal.fire({
                         title: 'Registro exitoso',
                         text: 'Ahora puedes iniciar sesión',
                         icon: 'success'
+                    }).then(() => {
+                        window.location.href = '/login';
                     });
                 }
             } catch (error) {

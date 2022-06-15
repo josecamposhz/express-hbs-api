@@ -13,7 +13,7 @@ const pool = isProduction ?
         user: "postgres",
         host: "localhost",
         password: "postgres",
-        database: "tasks",
+        database: "example",
         port: 5432,
     });
 

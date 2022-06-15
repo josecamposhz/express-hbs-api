@@ -4,7 +4,7 @@ const path = require("path");
 const { v4: uuidv4 } = require("uuid");
 const db = require("../db/users");
 const authController = require("../controllers/auth.controller");
-const requiresAuth = require("../middlewares/requiresAuth");
+const { requiresAuth } = require("../middlewares/requiresAuth");
 
 const router = Router();
 

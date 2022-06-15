@@ -9,6 +9,7 @@
         <th scope="col">Foto</th>
         <th scope="col">Nombre</th>
         <th scope="col">Email</th>
+        <th scope="col">Acciones</th>
       </tr>
     </thead>
     <tbody>
@@ -20,8 +21,35 @@
         </td>
         <td>{{this.name}}</td>
         <td>{{this.email}}</td>
+        <td>
+          <button class="btn btn-danger" onclick="deleteUser('{{this.id}}')">Eliminar</button>
+        </td>
       </tr>
       {{/each}}
     </tbody>
   </table>
 </div>
+
+<script>
+  function verificarUserRole() {
+    if (JSON.parse(localStorage.getItem("user")).role_id !== 2) {
+      window.location.href = "/login";
+    }
+  }
+  
+  async function deleteUser(userId) {
+    try {
+      const result = await deleteAlert.fire();
+
+      if (result.isConfirmed) {
+        const { data: token } = await axios.delete(`/users/${userId}`);
+        alert("Usuario eliminado con éxito");
+        // window.location.href = '/';
+        // localStorage.removeItem('user');
+        // localStorage.removeItem('token');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+</script>

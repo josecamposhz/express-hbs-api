@@ -28,12 +28,10 @@
             <button class="btn btn-primary" id="updateBtn">Actualizar</button>
         </div>
     </form>
-    <button class="btn btn-danger d-block mx-auto mt-2" id="deleteBtn">Eliminar cuenta</button>
 
 </div>
 
 <script>
-    const deleteBtn = document.getElementById("deleteBtn");
     const user = JSON.parse(localStorage.getItem('user'));
 
     if (user) {
@@ -44,18 +42,6 @@
     } else {
         location.replace('/');
     }
-
-    deleteBtn.addEventListener("click", async () => {
-        try {
-            const { data: token } = await axios.delete(`/users/${user.id}`);
-            alert("Usuario eliminado con éxito")
-            window.location.href = '/';
-            localStorage.removeItem('user');
-            localStorage.removeItem('token');
-        } catch (error) {
-            console.log(error);
-        }
-    })
 
     const form = document.querySelector("form")
 

@@ -11,17 +11,28 @@ const requiresAuth = (req, res, next) => {
         if (err) {
             res.status(401).json({ error: 'Invalid token', token_error: err });
         } else {
-            req.user = decodedToken;
+            req.user = decodedToken; // id, email, role_id
             next();
         }
     });
 }
 
-const verifyRoles = (roles = []) => {
+// const verifyAdmin = (req, res, next) => {
+//     const user = req.user;
+//     if (user.role_id !== 2) {
+//         return res.status(401).json({ error: 'Unauthorized' });
+//     }
+//     next();
+// };
+
+const verifyRoles = (...roles) => {
     return [
+        requiresAuth,
         (req, res, next) => {
-            const { user } = req;
-            if (roles.length && !roles.includes(user.role)) {
+            const user = req.user;
+            console.log(user);
+            console.log(roles)
+            if (roles.length && !roles.includes(user.role_id)) {
                 return res.status(401).json({ error: 'Unauthorized' });
             }
             next();
@@ -29,4 +40,4 @@ const verifyRoles = (roles = []) => {
     ]
 };
 
-module.exports = requiresAuth;
+module.exports = { requiresAuth, verifyRoles };

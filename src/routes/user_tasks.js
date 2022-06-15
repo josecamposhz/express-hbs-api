@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const db = require("../db/user_tasks");
-const requiresAuth = require("../middlewares/requiresAuth");
+const { requiresAuth } = require("../middlewares/requiresAuth");
 
 const router = Router();
 

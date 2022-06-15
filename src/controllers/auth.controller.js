@@ -16,7 +16,7 @@ async function login(req, res) {
     };
 
     const { password: p, ...userWithoutPassword } = user;
-    const token = jwt.sign({ id: user.id, email: user.email }, process.env.SECRET_KEY);
+    const token = jwt.sign({ id: user.id, email: user.email, role_id: user.role_id }, process.env.SECRET_KEY);
     res.status(200).send({ user: userWithoutPassword, token });
   } catch (error) {
     res.status(500).send(error);
